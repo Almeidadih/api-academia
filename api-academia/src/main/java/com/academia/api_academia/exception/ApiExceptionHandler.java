@@ -15,17 +15,20 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  org.springframework.http.HttpHeaders headers,
+                                                                  org.springframework.http.HttpStatusCode status,
+                                                                  org.springframework.web.context.request.WebRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", Instant.now().toString());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("status", status.value());
 
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fe -> errors.put(fe.getField(), fe.getDefaultMessage()));
         body.put("errors", errors);
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, headers, status);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

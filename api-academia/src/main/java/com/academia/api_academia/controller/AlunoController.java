@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/alunos")
@@ -21,8 +20,8 @@ public class AlunoController {
     }
 
     @GetMapping
-    public List<AlunoDto> getAllAlunos(){
-        return alunoService.findAll();
+    public org.springframework.data.domain.Page<AlunoDto> getAllAlunos(org.springframework.data.domain.Pageable pageable){
+        return alunoService.findAll(pageable);
     }
 
     @GetMapping("/{id}")

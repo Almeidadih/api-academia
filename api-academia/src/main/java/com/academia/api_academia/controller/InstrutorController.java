@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/instrutores")
 public class InstrutorController {
@@ -21,8 +19,8 @@ public class InstrutorController {
     }
 
     @GetMapping
-    public List<InstrutorDto> getAllInstrutores() {
-        return instrutorService.findAll();
+    public org.springframework.data.domain.Page<InstrutorDto> getAllInstrutores(org.springframework.data.domain.Pageable pageable) {
+        return instrutorService.findAll(pageable);
     }
 
     @GetMapping("/{id}")

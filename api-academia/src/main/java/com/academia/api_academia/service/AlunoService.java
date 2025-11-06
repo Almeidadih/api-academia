@@ -7,6 +7,8 @@ import com.academia.api_academia.model.Aluno;
 import com.academia.api_academia.repository.AlunoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,6 +26,11 @@ public class AlunoService {
     @Transactional(readOnly = true)
     public List<AlunoDto> findAll() {
         return repo.findAll().stream().map(AlunoMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AlunoDto> findAll(Pageable pageable) {
+        return repo.findAll(pageable).map(AlunoMapper::toDto);
     }
 
     @Transactional(readOnly = true)

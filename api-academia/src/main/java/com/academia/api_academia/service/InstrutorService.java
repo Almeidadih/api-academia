@@ -7,6 +7,8 @@ import com.academia.api_academia.model.Instrutor;
 import com.academia.api_academia.repository.InstrutorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,9 +23,15 @@ public class InstrutorService {
         this.repo = repo;
     }
 
+
     @Transactional(readOnly = true)
     public List<InstrutorDto> findAll() {
         return repo.findAll().stream().map(InstrutorMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<InstrutorDto> findAll(Pageable pageable) {
+        return repo.findAll(pageable).map(InstrutorMapper::toDto);
     }
 
     @Transactional(readOnly = true)
